@@ -3,3 +3,5 @@ google-genai
 PyPDF2
 python-docx
 SQLAlchemy
+pymysql
+cryptography
