@@ -2,16 +2,18 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-# Try loading from local .env file (for local development)
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except ImportError:
-    # If dotenv is missing (like on Vercel), we pass gracefully
-    pass
-
 # Securely grab the database URL directly from Vercel's environment variables
 DATABASE_URL = os.getenv("DATABASE_URL")
+
+# Fallback for local development if DATABASE_URL isn't in system env
+if not DATABASE_URL:
+    try:
+        # Try loading from local .env file only if we have to
+        from dotenv import load_dotenv
+        load_dotenv()
+        DATABASE_URL = os.getenv("DATABASE_URL")
+    except ImportError:
+        pass
 
 if not DATABASE_URL:
     raise ValueError("Error: DATABASE_URL not found in environment variables!")
