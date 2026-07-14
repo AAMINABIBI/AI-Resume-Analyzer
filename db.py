@@ -1,16 +1,20 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+# Hide your secret keys/environment files
+.env
+*.env
+secret_key.txt
 
-# Changed '/sys' to '/test' at the end of the URL string
-DATABASE_URL = "mysql+pymysql://3Wd4rrDLPhmy8ho.root:y4nVP9NVMYM7FtTF@gateway01.ap-northeast-1.prod.aws.tidbcloud.com:4000/test"
+# Ignore Python cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
 
-engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True,
-    connect_args={
-        "ssl": {}
-    }
-)
+# Ignore local virtual environments (if you used one)
+venv/
+.venv/
+env/
 
-SessionLocal = sessionmaker(bind=engine)
-Base = declarative_base()
+# Ignore system files
+.DS_Store
+Thumbs.db
