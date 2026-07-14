@@ -1,20 +1,24 @@
-# Hide your secret keys/environment files
-.env
-*.env
-secret_key.txt
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+from dotenv import load_dotenv
 
-# Ignore Python cache and temporary files
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.pytest_cache/
+# Load environment variables from the .env file
+load_dotenv()
 
-# Ignore local virtual environments (if you used one)
-venv/
-.venv/
-env/
+# Securely grab the database URL
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Ignore system files
-.DS_Store
-Thumbs.db
+if not DATABASE_URL:
+    raise ValueError("Error: DATABASE_URL not found in environment variables!")
+
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,
+    connect_args={
+        "ssl": {}
+    }
+)
+
+SessionLocal = sessionmaker(bind=engine)
+Base = declarative_base()
